@@ -1,0 +1,12 @@
+{
+    "firealert": {
+        "subject": "Fire Alert!",
+        "template": "Fire has been detected in these locations: \n{multi_location}",
+        "multi_location": "Fire has been detected at location https://www.google.com/maps/dir/{longitude},{latitude} at time {time} \n"
+    },
+    "moisturealert": {
+        "subject": "Soil Moisture Alert!",
+        "template": "Moisture in these locations has exeded your settings: \n{multi_location}",
+        "multi_location": "{alert_type} with treshhold {alert_value} has been detected at this location https://www.google.com/maps/dir/{longitude},{latitude} at {time} it was mesured to be {moisture_NPD} \n"
+    }
+}

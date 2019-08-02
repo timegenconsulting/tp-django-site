@@ -1,0 +1,4 @@
+-r requirements.txt
+
+flake8==3.6.0
+Fabric3==1.14.post1

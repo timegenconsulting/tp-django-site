@@ -1,0 +1,9 @@
+export RABBITURL=amqp://terraPorta:terraPorta@localhost:5672/terraPorta/
+export NOTIFY_EXCHANGE=notification
+export NOTIFY_QUEUE=notification_queue_1
+export EMAIL_HOST_USER=terraportatest
+export EMAIL_PASSWORD=terraporta123
+export EMAIL_HOST=smtp.gmail.com
+export EMAIL_PORT=587
+export EMAIL_USE_TLS=True
+export DEFAULT_FROM_EMAIL=terraportatest@gmail.com

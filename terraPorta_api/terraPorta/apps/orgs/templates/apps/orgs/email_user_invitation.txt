@@ -1,0 +1,6 @@
+Dear {{ username }},
+
+{{ org }} invites You to join.
+{{ link }}
+
+The invitation expires in two days

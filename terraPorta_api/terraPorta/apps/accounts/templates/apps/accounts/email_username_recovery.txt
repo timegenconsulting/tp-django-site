@@ -1,0 +1,5 @@
+Dear,
+
+You sent a request to get your username for the TerraPorta.
+
+Your username: {{ username }}

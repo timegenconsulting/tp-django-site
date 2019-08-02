@@ -1,0 +1,24 @@
+{% load rest_framework %}
+<h2>Buy for $1.00</h2>
+<form action="{% url 'charge' %}" method="post">
+  {% csrf_token %}
+  <div class="form-row inline">
+    <div class="col">
+      <label for="user">
+        Username
+      </label>
+      <input id="user" name="user" required>
+    </div>
+    <div class="col" hidden>
+      <label for="email">
+        Amount
+      </label>
+      <input id="amount" name="amount"value="{{charge}}">
+    </div>
+  </div>
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="{{key}}"
+          data-description="A Django Charge"
+          data-amount="500"
+          data-locale="auto"></script>
+</form>

@@ -1,0 +1,5 @@
+Dear {{ username }},
+
+Thank you for registering with TerraPorta. In order to activate your account, please click on the link below.
+
+{{ link }}

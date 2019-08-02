@@ -1,0 +1,160 @@
+version: '3'
+
+networks:
+    terraPorta:
+
+services:
+    moisture:
+        build: earthdata_service/
+        container_name: moisture
+        environment:
+            - RABBITURL
+            - NOTIFY_EXCHANGE
+            - MONGO_DB_MOISTURE
+            - MONGO_PASSWORD
+            - MONGO_USER
+            - MONGO_ADDR
+            - MONGO_PORT
+            - POSTGRES_ADDR
+            - POSTGRES_PORT
+            - POSTGRES_USER
+            - POSTGRES_PASSWORD
+            - POSTGRES_DB
+            - SCHEDULE_TIME_MOISTURE
+            - SCHEDULE_DELETE_DAYS_MOISTURE
+            - MOISTURE_EVENT_ID
+            - AMSR_URL
+            - AMSR_USER
+            - AMSR_PASSWORD
+        networks:
+          terraPorta:
+            aliases:
+              - moisture
+        volumes:
+            - ./amsr:/opt/app/AMSR
+
+    fire:
+        build: fire_service/
+        container_name: fire
+        environment:
+            - RABBITURL
+            - NOTIFY_EXCHANGE
+            - MONGO_DB_FIRE
+            - MONGO_PASSWORD
+            - MONGO_USER
+            - MONGO_ADDR
+            - MONGO_PORT
+            - POSTGRES_ADDR=${POSTGRES_ADDR}
+            - POSTGRES_PORT
+            - POSTGRES_USER
+            - POSTGRES_PASSWORD
+            - POSTGRES_DB
+            - TIMEOUTQUEUE
+            - SCHEDULE_TIME_FIRE
+            - SCHEDULE_DELETE_DAYS_FIRE
+            - FIRE_EVENT_ID
+            - FIRE_URL
+        networks:
+          terraPorta:
+            aliases:
+              - fire
+
+    notification:
+        build: notification_service/
+        container_name: notification
+        environment:
+            - RABBITURL
+            - NOTIFY_EXCHANGE
+            - NOTIFY_QUEUE
+            - EMAIL_HOST_USER=terraportatest
+            - EMAIL_PASSWORD=terraporta123
+            - EMAIL_HOST=smtp.gmail.com
+            - EMAIL_PORT=587
+            - EMAIL_USE_TLS=True
+            - DEFAULT_FROM_EMAIL=terraportatest@gmail.com
+        networks:
+          terraPorta:
+            aliases:
+              - fire
+
+    tp_api:
+        build: terraPorta_api/
+        container_name: tp_api
+        ports:
+            - "8080:8080"
+        environment:
+            - POSTGRES_DB
+            - POSTGRES_USER
+            - POSTGRES_PASSWORD
+            - POSTGRES_PORT
+            - POSTGRES_ADDR
+            - REDIS_URL
+            - REDIS_DB
+            - REDIS_PASSWORD
+            - ALLOWED_HOSTS
+            - ALLOWED_CORS
+            - DJANGO_SETTINGS_MODULE
+            - STRYPE_SECRET_KEY
+            - STRIPE_PUBLISHABLE_KEY
+            - IOTA_USER
+            - IOTA_PASSWORD
+            - IOTA_VERIFY_URL
+            - IOTA_LOGIN
+        networks:
+            terraPorta:
+                aliases:
+                    - tp_api
+
+    postgres:
+        image: postgres:9.4
+        container_name: tp_db
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_USER
+            - POSTGRES_PASSWORD
+            - POSTGRES_DB
+        volumes:
+            - ./postgres_data:/var/lib/postgresql/data
+        networks:
+            terraPorta:
+                aliases:
+                    - tp_db
+
+    redis:
+        image: redis
+        container_name: terraPorta_redis
+        command: redis-server --appendonly yes --requirepass terraPorta
+        networks:
+            terraPorta:
+                aliases:
+                    - tp_redis
+        ports:
+            - "6379:6379"
+
+
+    mongoDB:
+        image: mongo:3.6
+        ports:
+            - "27017:27017"
+        volumes:
+            - ./earthdata_db:/data/db
+        networks:
+            terraPorta:
+                aliases:
+                    - mongo_db
+
+    rabbit:
+        image: rabbitmq:3.5.6-management
+        container_name: tp_rabbit
+        environment:
+          - RABBITMQ_DEFAULT_USER
+          - RABBITMQ_DEFAULT_PASS
+          - RABBITMQ_DEFAULT_VHOST
+        ports:
+          - "5672:5672"
+          - "15672:15672"
+        networks:
+          terraPorta:
+            aliases:
+               - tp_rabbit
