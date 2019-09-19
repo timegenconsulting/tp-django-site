@@ -1,0 +1,17 @@
+# static files
+README.md
+
+AMSR
+logs
+test
+.eggs
+.pytest_cache
+Makefile
+registry.sh
+env.sh
+.coverage
+
+# git
+.git/
+.gitignore
+../earthdata_db/*
