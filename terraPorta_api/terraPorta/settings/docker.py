@@ -1,9 +1,9 @@
 """
 Django settings for Terra Porta project.
 """
-from .common import *  # noqa
 import os
 
+from .common import *  # noqa
 
 DEBUG = True
 STATIC_ROOT = 'app/static/'
@@ -13,7 +13,18 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(',')
 SECRET_KEY = 'f+9&iu8d8fhsljo*#hxha9#kley-7d&pu*-*5$m*wb4iajhs+x'
 SITE_URL = os.getenv('SITE_URL')
 
-CORS_ORIGIN_WHITELIST = (os.getenv("ALLOWED_CORS"),)
+CORS_ORIGIN_WHITELIST = os.getenv("ALLOWED_CORS",'').split(',')
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+
 
 DATABASES = {
     'default': {

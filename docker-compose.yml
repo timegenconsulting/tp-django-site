@@ -114,8 +114,8 @@ services:
             - POSTGRES_USER
             - POSTGRES_PASSWORD
             - POSTGRES_DB
-        volumes:
-            - ./postgres_data:/var/lib/postgresql/data
+       # volumes:
+       #     - ./postgres_data:/var/lib/postgresql/data
         networks:
             terraPorta:
                 aliases:
